@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reference Library</title>
+</head>
+<body>
+    <h1>Reference Library (Total IDs: {{ total_ids }})</h1> <!-- Display total IDs here -->
+    <a href="/">Back to Home</a>
+    <form action="/library" method="post">
+        <button type="submit">Reset and Replot</button>
+    </form>
+    <div>
+        {% for plot in plots %}
+        <form action="/update_comment" method="post">
+            <h2>{{ plot.split('_')[0] }}</h2>
+            <img src="{{ url_for('plot', filename=plot) }}" alt="{{ plot.split('_')[0] }} Spectrum">
+            <input type="hidden" name="material_id" value="{{ plot.split('_')[0] }}">
+            <textarea name="comment">{{ comments[plot.split('_')[0]] if comments else '' }}</textarea>
+            <button type="submit">Save Comment</button>
+        </form>
+        {% endfor %}
+    </div>
+</body>
+</html>
