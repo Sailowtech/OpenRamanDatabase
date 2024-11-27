@@ -11,7 +11,16 @@
         <input type="file" name="file" accept=".csv" required>
         <button type="submit">Upload</button>
     </form>
+    
+    <h2>Add Sample to Sample Bank</h2>
+    <form action="/add_sample" method="post" enctype="multipart/form-data">
+        <input type="text" name="sample_id" placeholder="Enter Sample ID" required>
+        <input type="file" name="file" accept=".csv" required>
+        <button type="submit">Add Sample</button>
+    </form>
+    
     <a href="/library">View Reference Library</a>
+    <a href="/sample_history">View Sample History</a>
     {% if results %}
     <h2>Results</h2>
     <ul>

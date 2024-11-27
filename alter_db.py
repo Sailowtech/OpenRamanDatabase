@@ -25,5 +25,25 @@ def update_database_structure():
         if conn:
             conn.close()
 
-# Call the function to update the database structure
-update_database_structure()
+
+def add_table():
+    # Connect to SQLite database
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+
+
+    # Create a sample_bank table if it doesn't exist
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS sample_bank (
+        sample_id TEXT,
+        intensity REAL,
+        wave_number REAL,
+        Comment TEXT
+    )
+    ''')
+
+    conn.commit()
+    conn.close()
+    print("Created Table")
+
+add_table()

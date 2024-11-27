@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample History</title>
+</head>
+<body>
+    <h1>Sample History</h1>
+    <a href="/">Back to Home</a>
+    <ul>
+    {% for sample in samples %}
+        <li>{{ sample }}</li>
+    {% endfor %}
+    </ul>
+    <h2>Sample Plots</h2>
+    <div>
+    {% for plot in plots %}
+        <h3>{{ plot.split('_')[1] }}</h3>
+        <img src="{{ url_for('plot', filename=plot) }}" alt="{{ plot.split('_')[0] }} Spectrum">
+    {% endfor %}
+    </div>
+</body>
+</html>
