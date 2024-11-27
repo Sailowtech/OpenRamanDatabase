@@ -1,6 +1,7 @@
 TODO:
 -----
 
--allow to add samples to refrence database
--make new sample database (separate)
--allows modification/comment/ remove add to reference database
+-add slider to adjust threshold peaks
+-add more microplastics to database
+-improve matching algorithm 
+-add possibility to add sample with information directly into a sample database for history
