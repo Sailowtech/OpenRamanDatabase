@@ -32,15 +32,15 @@ Before you start, ensure you have Docker and Docker Compose installed on your ma
 
 ### Installing the program
 
-     ```bash
-    git clone https://github.com/Sailowtech/OpenRamanDatabase.git
-    cd OpenRamanDatabase
-     ```
+   ```bash
+   git clone https://github.com/Sailowtech/OpenRamanDatabase.git
+   cd OpenRamanDatabase
+   ```
 You can aslo download as zip and cd into the directory containing the dockerfile.
 
 ### Launching 
 
-     ```bash
-    docker compose build
-    docker compose up
-     ```
+   ```bash
+   docker compose build
+   docker compose up
+   ```
