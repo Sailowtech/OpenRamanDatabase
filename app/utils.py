@@ -46,6 +46,10 @@ def process_uploaded_file(file):
     df = pd.read_csv(file)
     return df
 
+def normalize_data(intensities):
+    max_intensity = max(intensities) if intensities else 1
+    return [i / max_intensity for i in intensities]
+
 def process_spectrum(df):
     intensities = df.iloc[:, 0].tolist()
     wavelengths = df.iloc[:, 1].tolist()
@@ -132,7 +136,7 @@ def generate_plots():
         )
     print("All plots generated and saved.")
 
-def process_and_plot_sample(file):
+def process_and_plot_sample(file, sample_id="Sample"):
     df = process_uploaded_file(file)
     sample_peaks = process_spectrum(df)
     wavelengths = df.iloc[:, 1].tolist()
@@ -145,6 +149,61 @@ def process_and_plot_sample(file):
     peak_wavelengths = [wavelengths[i] for i in peaks]
     peak_intensities = [intensities[i] for i in peaks]
     
-    plot_spectrum(wavelengths, intensities, list(zip(peak_wavelengths, peak_intensities)), 'Sample', 'sample_with_peaks.png', directory='app/sample_plots')
+    plot_spectrum(wavelengths, intensities, list(zip(peak_wavelengths, peak_intensities)), sample_id, filename = 'sample_with_peaks.png', directory='app/sample_plots')
     
     return sample_peaks
+
+def process_uploaded_file(file):
+    df = pd.read_csv(file)
+    return df
+
+def add_sample_to_bank(sample_id, intensities, wave_numbers):
+    # Normalize intensities before storing
+    normalized_intensities = normalize_data(intensities)
+
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+    for intensity, wave_number in zip(normalized_intensities, wave_numbers):
+        cursor.execute("INSERT INTO sample_bank (sample_id, intensity, wave_number) VALUES (?, ?, ?)",
+                       (sample_id, intensity, wave_number))
+    conn.commit()
+    conn.close()
+
+def get_sample_data(sample_id):
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT intensity, wave_number FROM sample_bank WHERE sample_id=?", (sample_id,))
+    rows = cursor.fetchall()
+    conn.close()
+
+    if not rows:
+        return [], []
+
+    intensities, wave_numbers = zip(*rows)
+    return list(intensities), list(wave_numbers)
+
+def generate_sample_plots(sample_ids):
+    for sample_id in sample_ids:
+        intensities, wave_numbers = get_sample_data(sample_id)
+        
+        if not intensities or not wave_numbers:
+            print(f"No data found for {sample_id}")
+            continue
+        
+        # Find peaks in the normalized intensities
+        peaks, _ = find_peaks(intensities, height=height_threshold)
+        peak_wavelengths = [wave_numbers[i] for i in peaks]
+        peak_intensities = [intensities[i] for i in peaks]
+
+        # Generate plot for the sample
+        plot_spectrum(
+            wave_numbers,
+            intensities,
+            list(zip(peak_wavelengths, peak_intensities)),
+            sample_id,
+            f'sample_{sample_id}_with_peaks.png',
+            directory='app/sample_plots'
+        )
+
+    print("Sample plots generated and saved.")
+

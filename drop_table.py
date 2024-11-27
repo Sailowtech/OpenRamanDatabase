@@ -10,7 +10,7 @@ cursor = conn.cursor()
 
 # Drop the 'slopp' table
 try:
-    cursor.execute('DROP TABLE IF EXISTS sloppe')
+    cursor.execute('DROP TABLE IF EXISTS sample_bank')
     print("Table 'sloppe' has been dropped successfully.")
 except sqlite3.Error as e:
     print(f"An error occurred while dropping the table: {e}")

@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, send_from_directory, redirect
 import os
 import sqlite3
-from app.utils import process_and_plot_sample, calculate_similarity, generate_plots, get_all_ids, reference_spectra_ids, get_spectrum_data
+from app.utils import process_and_plot_sample, calculate_similarity, generate_plots, get_all_ids, reference_spectra_ids, get_spectrum_data, process_uploaded_file, add_sample_to_bank, generate_sample_plots
 
 app = Flask(__name__)
 db_file_path = 'app/database/microplastics_reference.db'  # Path to SQLite database
@@ -51,6 +51,31 @@ def update_comment():
     conn.close()
     
     return redirect('/library')
+@app.route('/add_sample', methods=['POST'])
+def add_sample():
+    sample_id = request.form.get('sample_id')
+    file = request.files.get('file')
 
+    if sample_id and file:
+        df = process_uploaded_file(file)
+        intensities = df.iloc[:, 0].tolist()
+        wave_numbers = df.iloc[:, 1].tolist()
+        add_sample_to_bank(sample_id, intensities, wave_numbers)
+
+    return redirect('/')
+
+@app.route('/sample_history', methods=['GET'])
+def sample_history():
+    conn = sqlite3.connect(db_file_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT DISTINCT sample_id FROM sample_bank")
+    samples = cursor.fetchall()
+    conn.close()
+
+    sample_ids = [sample[0] for sample in samples]
+    generate_sample_plots(sample_ids)
+    plots = os.listdir('app/sample_plots')
+
+    return render_template('sample_history.html', samples=sample_ids, plots=plots)
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
