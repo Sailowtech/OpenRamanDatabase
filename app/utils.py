@@ -149,25 +149,33 @@ def process_and_plot_sample(file, sample_id="Sample"):
     peak_wavelengths = [wavelengths[i] for i in peaks]
     peak_intensities = [intensities[i] for i in peaks]
     
-    plot_spectrum(wavelengths, intensities, list(zip(peak_wavelengths, peak_intensities)), sample_id, filename = 'sample_with_peaks.png', directory='app/sample_plots')
+    plot_spectrum(wavelengths, intensities, list(zip(peak_wavelengths, peak_intensities)), sample_id, filename = f'sample_{sample_id}_with_peaks.png', directory='app/sample_plots')
     
-    return sample_peaks
+    return sample_peaks, peak_wavelengths, peak_intensities
 
 def process_uploaded_file(file):
     df = pd.read_csv(file)
     return df
 
-def add_sample_to_bank(sample_id, intensities, wave_numbers):
-    # Normalize intensities before storing
-    normalized_intensities = normalize_data(intensities)
-
-    conn = sqlite3.connect(db_file_path)
-    cursor = conn.cursor()
-    for intensity, wave_number in zip(normalized_intensities, wave_numbers):
-        cursor.execute("INSERT INTO sample_bank (sample_id, intensity, wave_number) VALUES (?, ?, ?)",
-                       (sample_id, intensity, wave_number))
-    conn.commit()
-    conn.close()
+def add_sample_to_bank(sample_id, intensities, wave_numbers, best_match, similarity_score):
+    try:
+        conn = sqlite3.connect(db_file_path)
+        cursor = conn.cursor()
+        
+        for intensity, wave_number in zip(intensities, wave_numbers):
+            cursor.execute("""
+                INSERT INTO sample_bank (sample_id, intensity, wave_number, best_match, similarity_score) 
+                VALUES (?, ?, ?, ?, ?)
+            """, (sample_id, intensity, wave_number, best_match, similarity_score))
+        
+        conn.commit()
+        
+    except sqlite3.Error as e:
+        print(f"Database error: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+    finally:
+        conn.close()
 
 def get_sample_data(sample_id):
     conn = sqlite3.connect(db_file_path)
@@ -207,3 +215,54 @@ def generate_sample_plots(sample_ids):
 
     print("Sample plots generated and saved.")
 
+def plot_sample_with_reference(sample_id, sample_wavelengths, sample_intensities, ref_wavelengths, ref_intensities, match_id):
+    plt.figure(figsize=(10, 5))
+
+    # Plot the sample spectrum
+    plt.plot(sample_wavelengths, sample_intensities, label=f'Sample: {sample_id}')
+
+    # Plot the matched reference spectrum in red dashed lines
+    plt.plot(ref_wavelengths, ref_intensities, 'r--', label=f'Match: {match_id} (Reference)')
+
+    plt.xlabel('Wavenumber [cm⁻¹]')
+    plt.ylabel('Normalized Intensity')
+    plt.title(f'Sample vs. Matched Reference')
+    plt.legend()
+
+    # Save the plot to a file
+    plot_file_path = f'app/sample_plots/sample_{sample_id}_with_match.png'
+    plot_file_path_to_render = f'sample_{sample_id}_with_match.png'
+    plt.savefig(plot_file_path)
+    plt.close()
+
+    return plot_file_path_to_render
+
+def process_and_compare_sample(file, sample_id):
+    df = process_uploaded_file(file)
+    sample_intensities = df.iloc[:, 0].tolist()
+    sample_wavelengths = df.iloc[:, 1].tolist()
+
+    # Normalize the sample intensities
+    normalized_sample_intensities = normalize_data(sample_intensities)
+
+    # Calculate peaks and find the best match
+    sample_peaks = process_spectrum(df)
+    results, best_match = calculate_similarity(sample_peaks)
+
+    # Get matched reference data
+    ref_intensities, ref_wavelengths, _ = get_spectrum_data(best_match)
+
+    # Normalize reference data
+    normalized_ref_intensities = normalize_data(ref_intensities)
+    add_sample_to_bank(sample_id, normalized_sample_intensities, sample_wavelengths, best_match, best_match)
+    # Plot the sample with the matched reference
+    plot_file = plot_sample_with_reference(
+        sample_id,
+        sample_wavelengths,
+        normalized_sample_intensities,
+        ref_wavelengths,
+        normalized_ref_intensities,
+        best_match
+    )
+
+    return best_match, results, plot_file
