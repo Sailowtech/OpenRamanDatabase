@@ -6,14 +6,8 @@
     <title>Raman Spectroscope</title>
 </head>
 <body>
-    <h1>Upload Raman Spectrum CSV</h1>
+    <h2>Upload and add Sample to Sample Bank</h2>
     <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".csv" required>
-        <button type="submit">Upload</button>
-    </form>
-    
-    <h2>Add Sample to Sample Bank</h2>
-    <form action="/add_sample" method="post" enctype="multipart/form-data">
         <input type="text" name="sample_id" placeholder="Enter Sample ID" required>
         <input type="file" name="file" accept=".csv" required>
         <button type="submit">Add Sample</button>
@@ -31,7 +25,7 @@
     <h2>Best Match: {{ best_match }} {{ score|round(2) * 100 }}%</h2>
     <div>
         <h3>Sample Plot</h3>
-        <img src="{{ url_for('plot', filename='sample_with_peaks.png') }}" alt="Sample Spectrum">
+        <img src="{{ url_for('sample_plot_retrieve', filename=sample_plot) }}" alt="Sample Spectrum">
         <h3>Best Match Plot</h3>
         <img src="{{ url_for('plot', filename=best_match + '_with_peaks.png') }}" alt="{{ best_match }} Spectrum">
     </div>

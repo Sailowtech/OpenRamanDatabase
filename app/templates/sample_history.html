@@ -10,7 +10,14 @@
     <a href="/">Back to Home</a>
     <ul>
     {% for sample in samples %}
-        <li>{{ sample }}</li>
+        <li>
+            {{ sample }}
+            <!-- Delete form -->
+            <form action="/delete_sample" method="post" style="display:inline;">
+                <input type="hidden" name="sample_id" value="{{ sample }}">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
     {% endfor %}
     </ul>
     <h2>Sample Plots</h2>

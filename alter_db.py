@@ -11,7 +11,7 @@ def update_database_structure():
         cursor = conn.cursor()
 
         # SQL command to add a new column called "Comment" to the "Data" table
-        cursor.execute("ALTER TABLE microplastics ADD COLUMN Comment TEXT")
+        cursor.execute("ALTER TABLE sample_bank ADD COLUMN similarity_score TEXT")
         
         # Commit the changes
         conn.commit()
@@ -46,4 +46,6 @@ def add_table():
     conn.close()
     print("Created Table")
 
-add_table()
+#add_table()
+#
+update_database_structure()
