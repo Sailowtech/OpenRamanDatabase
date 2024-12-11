@@ -1,7 +1,8 @@
 # OpenRamanDatabase
 
 OpenRamanDatabase is a software tool designed to analyze data from an open Raman spectroscope and match it against a database of known microplastics. It was built to be associated with a lowtech/cost raman spectroscope. Thus a simple peak matching algorithm and a threshold adjustment for cutting out noise.
-![image](app/sample_plots/sample_test3-S1_with_match.png)
+![image](app/sample_plots/sample_Preprocessed-S1_with_match.png)
+![image](app/sample_plots/sample_Preprocessed-S10_with_match.png)
 ## Prerequisites
 
 Before you start, ensure you have Docker and Docker Compose installed on your machine.
@@ -36,7 +37,7 @@ Before you start, ensure you have Docker and Docker Compose installed on your ma
    ```
 You can aslo download as zip and cd into the directory containing the dockerfile.
 
-### Launching 
+### Launching
 
    ```bash
    docker compose build
