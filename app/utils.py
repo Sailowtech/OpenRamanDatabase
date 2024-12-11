@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import os
 from scipy.signal import find_peaks
 from scipy.ndimage import minimum_filter #for Rolling Ball (or Morphological) Baseline Correction
-from scipy.signal import savgol_filter
+from scipy.signal import savgol_filter #for smoothing algorithm
 import sqlite3
 import numpy as np
 from numpy.polynomial.polynomial import Polynomial #for polynomial fitting algorithm
@@ -77,8 +77,6 @@ def plot_spectrum(wavelengths, intensities, peaks, title, filename, directory='a
     plt.savefig(f'{directory}/{filename}')
     plt.close()
 
-import numpy as np
-
 def calculate_similarity(sample_peaks):
     similarities = {}
     position_tolerance = 0.1
@@ -149,9 +147,10 @@ def generate_plots():
 
 def process_and_plot_sample(file, sample_id="Sample"):
     df = process_uploaded_file(file)
-    sample_peaks = process_spectrum(df)
+
     wavelengths = df.iloc[:, 1].tolist()
     intensities = df.iloc[:, 0].tolist()
+    sample_peaks = process_spectrum(intensities, wavelengths)
 
     max_intensity = max(intensities)
     intensities = [i / max_intensity for i in intensities]
@@ -307,7 +306,7 @@ def baseline_polynomial(intensities, degree=3):
 
     return corrected_spectrum
 
-#promissing try changing parameter
+#most promissing try changing parameter or ebhance this
 #This method finds baselines as an envelope of the data using mathematical morphology operations,
 # suitable for baselines that need localization and aren't of polynomial form.
 def rolling_ball_baseline(intensities, window_size=50):
