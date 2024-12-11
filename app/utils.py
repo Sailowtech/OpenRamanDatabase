@@ -1,11 +1,15 @@
 import matplotlib.pyplot as plt
 import os
 from scipy.signal import find_peaks
+from scipy.ndimage import minimum_filter #for Rolling Ball (or Morphological) Baseline Correction
+from scipy.signal import savgol_filter
 import sqlite3
 import numpy as np
+from numpy.polynomial.polynomial import Polynomial #for polynomial fitting algorithm
 import pandas as pd
+import pywt #for wavelet algorithm
 
-height_threshold = 0.5
+height_threshold = 0.2
 
 db_file_path = 'app/database/microplastics_reference.db'  # Path to SQLite database
 
@@ -15,7 +19,7 @@ def get_all_ids():
     cursor.execute("SELECT DISTINCT ID FROM microplastics")
     rows = cursor.fetchall()
     conn.close()
-    
+
     # Extract IDs from the fetched rows
     all_ids = [row[0] for row in rows]
     return all_ids
@@ -35,41 +39,32 @@ def get_spectrum_data(material_id):
 
     # Extract intensities and wave numbers from the query result
     intensities, wave_numbers = zip(*[(row[0], row[1]) for row in rows])
-    
+
     # Extract comments, default to empty string if none present
     comments = [row[2] if len(row) > 2 else '' for row in rows]
     # Assuming the comment is the same for all entries of a material_id, take the first one
     comment = comments[0] if comments else ''
     return list(intensities), list(wave_numbers), comment
 
-def process_uploaded_file(file):
-    df = pd.read_csv(file)
-    return df
 
 def normalize_data(intensities):
-    max_intensity = max(intensities) if intensities else 1
+    max_intensity = max(intensities)
     return [i / max_intensity for i in intensities]
 
-def process_spectrum(df):
-    intensities = df.iloc[:, 0].tolist()
-    wavelengths = df.iloc[:, 1].tolist()
-    
-    # Normalize intensities
-    max_intensity = max(intensities)
-    intensities = [i / max_intensity for i in intensities]
-        
+def process_spectrum(intensities, wavelengths):
+
     peaks, _ = find_peaks(intensities, height=height_threshold)
     peak_wavelengths = [wavelengths[i] for i in peaks]
     peak_intensities = [intensities[i] for i in peaks]
-    
+
     return list(zip(peak_wavelengths, peak_intensities))
 
 def plot_spectrum(wavelengths, intensities, peaks, title, filename, directory='app/plots'):
     if not os.path.exists(directory):
         os.makedirs(directory)
-    
+
     peak_wavelengths, peak_intensities = zip(*peaks) if peaks else ([], [])
-    
+
     plt.figure(figsize=(10, 5))
     plt.plot(wavelengths, intensities, label=title)
     plt.scatter(peak_wavelengths, peak_intensities, color='red', label='Peaks')
@@ -82,51 +77,67 @@ def plot_spectrum(wavelengths, intensities, peaks, title, filename, directory='a
     plt.savefig(f'{directory}/{filename}')
     plt.close()
 
+import numpy as np
+
 def calculate_similarity(sample_peaks):
     similarities = {}
+    position_tolerance = 0.1
+    intensity_tolerance = 0.2
+    window = 50
+    penalty_score = -1  # Represents a heavy penalty for unmatched peaks
+
     for name in reference_spectra_ids:
         intensities, wavelengths, comment = get_spectrum_data(name)
-        
-        if not intensities or not wavelengths:
-            continue
-        
-        # Normalize intensities
-        max_intensity = max(intensities)
-        intensities = [i / max_intensity for i in intensities]
-        
-        ref_peaks = process_spectrum(pd.DataFrame({'intensity': intensities, 'wavelength': wavelengths}))
-        
-        # Calculate similarity
+        ref_peaks = process_spectrum(intensities, wavelengths)
+
         similarity_scores = []
+
         for sample_peak in sample_peaks:
+            # Check suitable matching peaks within a ±window range
+            best_match_score = penalty_score
+            sample_wavenumber = sample_peak[0]
+
             for ref_peak in ref_peaks:
-                position_diff = abs(sample_peak[0] - ref_peak[0]) / ref_peak[0]
-                intensity_diff = abs(sample_peak[1] - ref_peak[1]) / ref_peak[1]
-                
-                similarity = 1 - (0.5 * position_diff + 0.5 * intensity_diff)
-                similarity_scores.append(similarity)
-        
-        # Average similarity score
+                ref_wavenumber = ref_peak[0]
+                ref_intensity = ref_peak[1]
+
+                # Check if the reference peak is within the specified window
+                if abs(sample_wavenumber - ref_wavenumber) <= window:
+                    position_diff = abs(sample_wavenumber - ref_wavenumber) / ref_wavenumber
+                    intensity_diff = abs(sample_peak[1] - ref_intensity) / ref_intensity
+
+                    if position_diff < position_tolerance and intensity_diff < intensity_tolerance:
+                        # Calculate a weighted similarity using a stricter match
+                        similarity = 1 - (0.8 * position_diff + 0.2 * intensity_diff)
+                        weighted_similarity = similarity * ref_intensity
+
+                        # Use the accumulated score for each sample peak
+                        best_match_score = max(best_match_score, weighted_similarity)
+
+            similarity_scores.append(best_match_score)
+
+        # Calculate a weighted average similarity for this reference
         if similarity_scores:
-            similarities[name] = np.mean(similarity_scores)
+            similarities[name] = np.average(similarity_scores)
         else:
             similarities[name] = 0
-    
+
+    # Determine the best match based on the similarity scores
     best_match = max(similarities, key=similarities.get) if similarities else None
     return similarities, best_match
 
 def generate_plots():
     for material_id in reference_spectra_ids:
         intensities, wavelengths, comment = get_spectrum_data(material_id)
-        
+
         if not intensities or not wavelengths:
             print(f"No data found for {material_id}")
             continue
-        
+
         peaks, _ = find_peaks(intensities, height=height_threshold)
         peak_wavelengths = [wavelengths[i] for i in peaks]
         peak_intensities = [intensities[i] for i in peaks]
-        
+
         plot_spectrum(
             wavelengths,
             intensities,
@@ -141,16 +152,16 @@ def process_and_plot_sample(file, sample_id="Sample"):
     sample_peaks = process_spectrum(df)
     wavelengths = df.iloc[:, 1].tolist()
     intensities = df.iloc[:, 0].tolist()
-    
+
     max_intensity = max(intensities)
     intensities = [i / max_intensity for i in intensities]
-    
+
     peaks, _ = find_peaks(intensities, height=height_threshold)
     peak_wavelengths = [wavelengths[i] for i in peaks]
     peak_intensities = [intensities[i] for i in peaks]
-    
+
     plot_spectrum(wavelengths, intensities, list(zip(peak_wavelengths, peak_intensities)), sample_id, filename = f'sample_{sample_id}_with_peaks.png', directory='app/sample_plots')
-    
+
     return sample_peaks, peak_wavelengths, peak_intensities
 
 def process_uploaded_file(file):
@@ -161,15 +172,15 @@ def add_sample_to_bank(sample_id, intensities, wave_numbers, best_match, similar
     try:
         conn = sqlite3.connect(db_file_path)
         cursor = conn.cursor()
-        
+
         for intensity, wave_number in zip(intensities, wave_numbers):
             cursor.execute("""
-                INSERT INTO sample_bank (sample_id, intensity, wave_number, best_match, similarity_score) 
+                INSERT INTO sample_bank (sample_id, intensity, wave_number, best_match, similarity_score)
                 VALUES (?, ?, ?, ?, ?)
             """, (sample_id, intensity, wave_number, best_match, similarity_score))
-        
+
         conn.commit()
-        
+
     except sqlite3.Error as e:
         print(f"Database error: {e}")
     except Exception as e:
@@ -193,11 +204,11 @@ def get_sample_data(sample_id):
 def generate_sample_plots(sample_ids):
     for sample_id in sample_ids:
         intensities, wave_numbers = get_sample_data(sample_id)
-        
+
         if not intensities or not wave_numbers:
             print(f"No data found for {sample_id}")
             continue
-        
+
         # Find peaks in the normalized intensities
         peaks, _ = find_peaks(intensities, height=height_threshold)
         peak_wavelengths = [wave_numbers[i] for i in peaks]
@@ -237,16 +248,31 @@ def plot_sample_with_reference(sample_id, sample_wavelengths, sample_intensities
 
     return plot_file_path_to_render
 
-def process_and_compare_sample(file, sample_id):
+def process_and_compare_sample(file, sample_id, algorithm, param):
     df = process_uploaded_file(file)
     sample_intensities = df.iloc[:, 0].tolist()
     sample_wavelengths = df.iloc[:, 1].tolist()
 
-    # Normalize the sample intensities
-    normalized_sample_intensities = normalize_data(sample_intensities)
+    # Baseline correction for sample data
+    # Apply the chosen baseline correction algorithm
+    if algorithm == 'polynomial':
+        corrected_sample_intensities = baseline_polynomial(sample_intensities, degree=int(param))
+        normalized_sample_intensities = normalize_data(corrected_sample_intensities)
+    elif algorithm == 'rolling_ball':
+        corrected_sample_intensities = rolling_ball_baseline(sample_intensities, window_size=int(param))
+        normalized_sample_intensities = normalize_data(corrected_sample_intensities)
+    elif algorithm == 'wavelet':
+        corrected_sample_intensities = wavelet_baseline(sample_intensities, level=int(param))
+        normalized_sample_intensities = normalize_data(corrected_sample_intensities)
+    elif algorithm == 'derivative':
+        corrected_sample_intensities = derivative_baseline(sample_intensities, window_length=int(param))
+        normalized_sample_intensities = normalize_data(corrected_sample_intensities)
+    else:
+        normalized_sample_intensities = normalize_data(sample_intensities) # No baseline correction applied
 
+    #save_to_csv(corrected_sample_intensities, sample_wavelengths, sample_id) #for troubleshooting
     # Calculate peaks and find the best match
-    sample_peaks = process_spectrum(df)
+    sample_peaks = process_spectrum(normalized_sample_intensities, sample_wavelengths)
     results, best_match = calculate_similarity(sample_peaks)
 
     # Get matched reference data
@@ -266,3 +292,65 @@ def process_and_compare_sample(file, sample_id):
     )
 
     return best_match, results, plot_file
+
+###Removing Baseline algorithms
+
+#promissing try changing parameter
+#By fitting a polynomial to the data, you can estimate and subtract the baseline.
+# This approach is quite different from ALS and can be effective when the baseline behaves like a polynomial function.
+def baseline_polynomial(intensities, degree=3):
+    indices = np.arange(len(intensities))
+    poly = Polynomial.fit(indices, intensities, degree)
+
+    baseline = poly(indices)
+    corrected_spectrum = intensities - baseline
+
+    return corrected_spectrum
+
+#promissing try changing parameter
+#This method finds baselines as an envelope of the data using mathematical morphology operations,
+# suitable for baselines that need localization and aren't of polynomial form.
+def rolling_ball_baseline(intensities, window_size=50):
+    baseline = minimum_filter(intensities, size=window_size)
+    corrected_spectrum = np.array(intensities) - baseline
+
+    return corrected_spectrum
+
+#Doesnt seem to work
+#Wavelet transforms can be used to decompose the signal and separate out low-frequency components considered as the baseline.
+def wavelet_baseline(intensities, wavelet='db3', level=1):
+    coeffs = pywt.wavedec(intensities, wavelet, level=level)
+
+    # Set approximation coefficients to zero to remove baseline
+    coeffs[0] *= 0
+
+    baseline = pywt.waverec(coeffs, wavelet)
+    if len(baseline) != len(intensities):
+        baseline = baseline[:len(intensities)]  # Adjust length if necessary
+
+    corrected_spectrum = np.array(intensities) - baseline
+
+    return corrected_spectrum
+
+#doesnt seem to work
+#This approach utilizes smoothing, followed by calculation of derivatives to approximate the baseline.
+def derivative_baseline(intensities, window_length=11, polyorder=2):
+    smoothed = savgol_filter(intensities, window_length, polyorder)
+    derivative = np.gradient(smoothed)  # First derivative
+
+    baseline = np.cumsum(derivative)  # Integrate to get back the baseline
+
+    corrected_spectrum = np.array(intensities) - baseline
+    return corrected_spectrum
+
+###auxiliary function for troobleshooting
+def save_to_csv(intensities, wavenumbers, filename='output.csv'):
+
+    # Create a DataFrame for easier CSV export
+    df = pd.DataFrame({
+        'Intensity': intensities,
+        'Wavenumber': wavenumbers
+    })
+
+    # Save to CSV
+    df.to_csv(filename, index=False)

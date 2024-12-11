@@ -4,23 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raman Spectroscope</title>
+    <style>
+        .param-input {
+            display: none;
+        }
+    </style>
+    <script>
+        function updateParameterInput() {
+            const algorithm = document.getElementById('algorithm').value;
+            const paramInput = document.getElementById('param-input');
+            paramInput.style.display = 'none';  // Hide parameters input by default
+            
+            switch (algorithm) {
+                case 'polynomial':
+                    document.getElementById('param-label').innerText = 'Degree';
+                    document.getElementById('param').placeholder = 'e.g., 3';
+                    paramInput.style.display = 'block';
+                    break;
+                case 'rolling_ball':
+                    document.getElementById('param-label').innerText = 'Window Size';
+                    document.getElementById('param').placeholder = 'e.g., 50';
+                    paramInput.style.display = 'block';
+                    break;
+                case 'wavelet':
+                    document.getElementById('param-label').innerText = 'Wavelet Level';
+                    document.getElementById('param').placeholder = 'e.g., 1';
+                    paramInput.style.display = 'block';
+                    break;
+                case 'derivative':
+                    document.getElementById('param-label').innerText = 'Window Length (smoothing)';
+                    document.getElementById('param').placeholder = 'e.g., 11';
+                    paramInput.style.display = 'block';
+                    break;
+            }
+        }
+    </script>
 </head>
 <body>
-    <h2>Upload and add Sample to Sample Bank</h2>
+    <h1>Upload Raman Spectrum CSV</h1>
     <form action="/" method="post" enctype="multipart/form-data">
-        <input type="text" name="sample_id" placeholder="Enter Sample ID" required>
         <input type="file" name="file" accept=".csv" required>
-        <button type="submit">Add Sample</button>
+        <input type="text" name="sample_id" placeholder="Enter Sample ID" required>
+
+        <label for="algorithm">Choose Baseline Correction Algorithm:</label>
+        <select id="algorithm" name="algorithm" onchange="updateParameterInput()">
+            <option value="none">None</option>
+            <option value="polynomial">Polynomial Fitting</option>
+            <option value="rolling_ball">Rolling Ball</option>
+            <option value="wavelet">Wavelet Transform</option>
+            <option value="derivative">Smoothing and Derivative</option>
+        </select>
+
+        <div id="param-input" class="param-input">
+            <label id="param-label" for="param"></label>
+            <input type="text" id="param" name="param" placeholder="">
+        </div>
+        
+        <button type="submit">Upload</button>
     </form>
-    
+
     <a href="/library">View Reference Library</a>
     <a href="/sample_history">View Sample History</a>
+
     {% if results %}
     <h2>Results</h2>
     <ul>
-        {% for key, value in results.items() %}
-        <li>{{ key }}: {{ value|round(2) * 100 }}%</li>
-        {% endfor %}
+    {% for key, value in results.items() %}
+    <li>{{ key }}: {{ value|round(2) * 100 }}%</li>
+    {% endfor %}
     </ul>
     <h2>Best Match: {{ best_match }} {{ score|round(2) * 100 }}%</h2>
     <div>
@@ -30,3 +81,5 @@
         <img src="{{ url_for('plot', filename=best_match + '_with_peaks.png') }}" alt="{{ best_match }} Spectrum">
     </div>
     {% endif %}
+</body>
+</html>
