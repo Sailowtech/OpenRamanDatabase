@@ -15,14 +15,9 @@ def index():
         param = request.form.get('param')
 
         if file and sample_id:
-            # Calculate similarity
-            #sample_peaks, normalized_intensities, wave_numbers = process_and_plot_sample(file, sample_id)
-            #results, best_match = calculate_similarity(sample_peaks)
-            #score = results[best_match]
+
             best_match, results, plot_file= process_and_compare_sample(file, sample_id, algorithm, param)
 
-            # Ensure the function is called with all required arguments
-            #add_sample_to_bank(sample_id, normalized_intensities, wave_numbers, best_match, score)
             return render_template('index.html', results=results, best_match=best_match, score=results[best_match], sample_plot=plot_file)
 
     return render_template('index.html', results=None, best_match=None, score=None, sample_plot=None)
@@ -31,9 +26,9 @@ def index():
 def library():
     if request.method == 'POST':
         generate_plots()
-    
+
     plots = os.listdir('app/plots')
-    
+
     # Fetch all comments
     comments = {}
     for material_id in reference_spectra_ids:
@@ -57,13 +52,13 @@ def sample_plot_retrieve(filename):
 def update_comment():
     material_id = request.form.get('material_id')
     new_comment = request.form.get('comment')
-    
+
     conn = sqlite3.connect(db_file_path)
     cursor = conn.cursor()
     cursor.execute("UPDATE microplastics SET Comment=? WHERE ID=?", (new_comment, material_id))
     conn.commit()
     conn.close()
-    
+
     return redirect('/library')
 @app.route('/add_sample', methods=['POST'])
 def add_sample():
@@ -94,7 +89,7 @@ def sample_history():
 @app.route('/delete_sample', methods=['POST'])
 def delete_sample():
     sample_id = request.form.get('sample_id')
-    
+
     if sample_id:
         # Delete the sample from the database
         conn = sqlite3.connect(db_file_path)
