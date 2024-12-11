@@ -1,7 +1,15 @@
 TODO:
 -----
 
--add slider to adjust threshold peaks
--add more microplastics to database
--improve matching algorithm 
--Refine sample history options
+-improve matching algorithm
+-add peaks to matched graph
+-make final documentation on github + report slides
+
+
+Future tasks to do:
+------------
+-add conversion of wavelenght to wavenumber (depends on final laser used in the raman spectroscope)
+-add more microplastics to reference database
+-refine sample history (timestamps, order in history ...)
+-make a top 3 or top matching canditate in score order
+-correction for match overlap? Seems the reference has an offset

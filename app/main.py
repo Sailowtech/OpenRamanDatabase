@@ -11,12 +11,15 @@ def index():
     if request.method == 'POST':
         file = request.files['file']
         sample_id = request.form.get('sample_id')
+        algorithm = request.form.get('algorithm')
+        param = request.form.get('param')
+
         if file and sample_id:
             # Calculate similarity
             #sample_peaks, normalized_intensities, wave_numbers = process_and_plot_sample(file, sample_id)
             #results, best_match = calculate_similarity(sample_peaks)
             #score = results[best_match]
-            best_match, results, plot_file= process_and_compare_sample(file, sample_id)
+            best_match, results, plot_file= process_and_compare_sample(file, sample_id, algorithm, param)
 
             # Ensure the function is called with all required arguments
             #add_sample_to_bank(sample_id, normalized_intensities, wave_numbers, best_match, score)
@@ -101,7 +104,7 @@ def delete_sample():
         conn.close()
 
         # Delete the corresponding plot file
-        plot_file_path = os.path.join('app/sample_plots', f'sample_{sample_id}_with_peaks.png')
+        plot_file_path = os.path.join('app/sample_plots', f'sample_{sample_id}_with_match.png')
         if os.path.exists(plot_file_path):
             os.remove(plot_file_path)
 
