@@ -1,0 +1,340 @@
+ABS PLAS193
+algin BIOL006
+beachcast white foam sheet PLAS251
+blue fragment PLAS253
+bone BIOL001
+bone BIOL007
+bone BIOL009
+bone BIOL025
+BPF PLAS233
+BR PLAS226
+CA PLAS163
+calcium carbonate BIOL003
+calcium carbonate BIOL014
+cellulose BIOL005
+cellulose BIOL021
+cellulose PLAS257
+charcoal BIOL002
+chitin BIOL004
+chitin BIOL012
+chitin BIOL022
+clear plastic hollow sphere PLAS256
+collagen BIOL016
+dentin BIOL008
+drip irrigation tubing PLAS248
+EPS PLAS104
+FEP PLAS189
+FPM PLAS031
+green plastic mulch PLAS240
+HDPE PLAS188
+HDPE PLAS260
+keratin BIOL010
+Latex PLAS221
+LDPE PLAS158
+myofibrillar protein BIOL013
+myofibrillar protein BIOL015
+NBR PLAS259
+nylon PLAS190
+P PLAS206
+PA PLAS096
+PA PLAS100
+PBAT PLAS140
+PBS PLAS137
+PC PLAS236
+PCL PLAS143
+PE PLAS218
+PE PLAS258
+PEEK PLAS191
+PEI PLAS198
+PETE PLAS115
+PETE PLAS117
+PETE PLAS126
+PETE PLAS157
+PETG PLAS194
+PEX PLAS084
+PFA PLAS216
+PI PLAS197
+PLA PLAS171
+PMMA PLAS195
+POM PLAS232
+PP PLAS055
+PP PLAS072
+PP PLAS175
+PP PLAS223
+PPE PLAS051
+PPO PLAS199
+PPS PLAS213
+PS PLAS102
+PS PLAS160
+PS PLAS187
+PSA PLAS176
+PTFE PLAS201
+PVA PLAS052
+PVC PLAS151
+PVDF PLAS214
+SBS PLAS113
+strapping tape blue PLAS244
+strawberry container PLAS241
+UHMW PLAS032
+white and gray mask filter PLAS252
+Acrylonitrile Butadiene Styrene 2. Red LEGO
+Acrylonitrile Butadiene Styrene 14. White Refrigerator Lining
+Acrylonitrile Butadiene Styrene 10. Brown LEGO
+Acrylonitrile Butadiene Styrene 6. Dark Green LEGO
+Acrylonitrile Butadiene Styrene 7. Light Green LEGO
+Acrylonitrile Butadiene Styrene 3. Light Blue LEGO
+Acrylonitrile Butadiene Styrene 8. Yellow LEGO
+Acrylonitrile Butadiene Styrene 1. Orange LEGO
+Acrylonitrile Butadiene Styrene 9. Brown LEGO
+Acrylonitrile Butadiene Styrene 5. Dark Blue LEGO
+Cellulose Acetate 5. Brown Photography Film
+Cellulose Acetate 1. Red Sphere
+Cellulose Acetate 3. White Cigarette Filter
+Cellulose Acetate 4. White Fiber
+Acrylic 4. Purple Yarn
+Acrylic 8. Orange Fiber
+Acrylic 1. Green Yarn
+Acrylic 6. Orange Yarn
+Acrylic 2. Red Yarn
+Acrylic 7. White Yarn
+Acrylic 3. Yellow Yarn
+Acrylic 10. Pink Fiber
+Acrylic 9. Yellow Fiber
+Acrylic 5. Pink Yarn
+Polyvinyl Chloride 21. Green Slinky Toy
+Polyvinyl Chloride 10. White Microsphere
+Polyvinyl Chloride 13. Grey Cable Cover
+Polyvinyl Chloride 2. Yellow Raincoat
+Polyvinyl Chloride 22. Blue Slinky Toy
+Polyvinyl Chloride 8a. White Cable Cover
+Polyvinyl Chloride 20. Purple Wire Cover
+Polyvinyl Chloride 5. Clear Cling Wrap
+Polyvinyl Chloride 6. Red Cable Cover
+Polyvinyl Chloride 18. Red Wire Cover
+Polyvinyl Chloride 26. White Railcard
+Polycarbonate 3. Clear Lab Filter
+Polycarbonate 6. Blue Glassware
+Polycarbonate 2. Clear Swimming Goggles
+Polycarbonate 1. Clear CD
+Polycarbonate 8. Red Pan Scraper
+Polycarbonate 5. Clear Lab Goggles
+Polycarbonate 10. Clear LEGO
+Polymethyl Methacrylate 2. Clear Glasses Lens
+Polyamide 5. White Tooth Floss
+Polyamide 3. White Fiber
+Polyamide 6. Red Fiber
+Polyamide 10. Yellow Fiber
+Polyamide 2. White Pellet
+Polyamide 4. White Fiber
+Polyamide 1. White Cable Tie
+Polyurethane 12. Clear Hair Tie
+Polyurethane 18. White Elastic Fiber
+Polyurethane 17. Clear Thermo-Polyurethane Square
+Polyurethane 7. Yellow Foam Packaging
+Polyurethane 6. Black Phone Case
+Polyurethane 11. Grey Zip Hold
+Polypropylene 5. White Food Wrapper
+Polypropylene 12. Yellow Food Wrapper
+Polypropylene 9. White Fork
+Polypropylene 24. White Water Filter Deposit
+Polypropylene 10. Black Battery Holder
+Polypropylene 4. Clear Container Lid
+Polypropylene 19. Grey Fiber
+Polypropylene 8. White Bottle Cap
+Polypropylene 14. Blue Bottle Cap
+Polypropylene 21. White Ribbon
+Polypropylene 15. Clear Cling Wrap
+Polypropylene 17. White Rope
+Polypropylene 2. White Straw
+Polypropylene 7. White Toothbrush Handle
+Polypropylene 13. Red Bottle Cap
+Polypropylene 23. Purple Container Lid
+Polypropylene 1. Red Straw
+Polyethylene Vinyl Acetate 8. Green Flip Flop
+Polyethylene Vinyl Acetate 9. Pink Flip Flop
+Polyethylene Vinyl Acetate 1. Pink Flip Flop
+Polyethylene Vinyl Acetate 2. Orange Flip Flop
+Polyethylene Vinyl Acetate 7. Yellow Flip Flop
+Cotton 14. Yellow Fiber
+Cotton 3a. Yellow Fiber
+Cotton 7. Orange Fiber
+Cotton 11. Brown Fiber
+Cotton 11a. Brown Fiber
+Cotton 2a. Pink Fiber
+Cotton 2. Pink Fiber
+Cotton 16. White Lab Coat
+Cotton 9. Black Fiber
+Cotton 16a. White Lab Coat
+Cotton 17. White Tea Bag
+Cotton 8. Red Fiber
+Cotton 10. Purple Fiber
+Cotton 3. Yellow Fiber
+Cotton 1. Grey Fiber
+Cotton 12a. Grey Fiber
+Polyethylene 11. Green Toy
+Polyethylene 20. White Microsphere
+Polyethylene 29. Purple Microbead
+Polyethylene 22. Blue Container Lid
+Polyethylene 10. Grey Grocery Bag
+Polyethylene 5. Green Microsphere
+Polyethylene 28. Blue Microbead
+Polyethylene 27. Blue Microbead
+Polyethylene 24. White Microbead
+Polyethylene 3. Turquoise Bin
+Polyethylene 6. White Microsphere
+Polyethylene 7. Clear Cling Wrap
+Polyethylene 4. Orange Bin
+Polyethylene 21. Yellow Container Lid
+Polyethylene 19. Grey Cosmetics Bottle
+Polyethylene 26. White Microbead
+Polyethylene 9. White Grocery Bag
+Polyethylene 25. White Microbead
+Polyethylene 23. Clear Cereal Bag
+Polyethylene 14. Green Wrapper
+Polyethylene 12. Black Pen Lid
+Polyethylene 16. White Art Foam
+Polyethylene 2. Brown Food Container
+Polyethylene 15. Green Tampon Applicator
+Polyethylene Terephthalate 13. Clear Plastic Sheet
+Polyethylene Terephthalate 10. Blue Pharmaceuticals Bottle
+Polyethylene Terephthalate 9. White Shampoo Bottle
+Polyethylene Terephthalate 2. Black Bottle
+Polyethylene Terephthalate 16. White Pellet
+Polyethylene Terephthalate 14. White Microsphere
+Polyethylene Terephthalate 8. Clear Juice Bottle
+Polyethylene Terephthalate 1. Red Bottle
+Polyethylene Terephthalate 11. White Wet Wipes Packet
+Polyester 1. White Fiber
+Polyester 10. Dark Blue Fiber
+Polyester 7. Red Fiber
+Polyester 3. Orange Fiber
+Polyester 6. White Fiber
+Polyester 4. White Fiber
+Polyester 8. Brown Fiber
+Polyester 2. Yellow Fiber
+Polyester 5. Pink Fiber
+Polyester 9. Brown Fiber
+Polystyrene 3. White Foam Container
+Polystyrene 2. White Coffee Cup Lid
+Polystyrene 13. Pink Spoon
+Polystyrene 15. Purple LEGO
+Polystyrene 1. Brown Coffee Cup Lid
+Polystyrene 4. White Microsphere
+Polystyrene 11. Orange Printer Cartridge
+Polystyrene 8. Clear Pen Barrel
+Polystyrene 5. Orange Microsphere
+Polystyrene 14. Clear Refrigerator Drawer
+Polystyrene 6. Clear Glassware
+Acrylonitrile Butadiene Styrene 1. Clear Fragment
+Cellulose Acetate 1. Clear Film
+Cellulose Acetate 2. White Fragment
+Cellulose Acetate 3. Pink Fiber
+Acrylic 2. Pink Fiber Bundle (Polyacrylonitrile)
+Acrylic 3. Brown Fiber (Polyacrylonitrile)
+Acrylic 1. Red Fiber (Polyacrylonitrile)
+Polysulfone 1. Blue Fragment
+Polyvinyl Chloride 4. Orange Foam
+Polyvinyl Chloride 3. Blue Fragment
+Polyvinyl Chloride 2. Clear Fragment
+Polycarbonate 2. Clear Fragment
+Polycarbonate 1. Pink Fragment
+Dyed Cellulose 4. Yellow Fiber
+Dyed Cellulose 3. Green Fiber
+Dyed Cellulose 2. Pink Fiber
+Dyed Cellulose 1. Red Fiber
+Dyed Cellulose 5. Red Fiber
+Polymethyl Methacrylate 3. Clear Fragment (Plexiglass)
+Polymethyl Methacrylate 1. Clear Sphere
+Polymethyl Methacrylate 2. Clear Sphere
+Polyamide 4. Clear Fiber
+Polyamide 5. Clear Fiber
+Polyamide 6. Clear Film
+Polyamide 7. Clear Fiber
+Polyamide 2. Pink Fiber
+Polyamide 3. Pink Fiber
+Polyamide 1. Blue Fragment
+Polybutylene Terephthalate 1. Pink Fragment
+Polystyrene-co-Polyvinyl Chloride 1. Clear Film
+Polyurethane 1. Black Fiber
+Polyurethane 3. White Fiber
+Polyurethane 5. Brown Foam
+Polyurethane 4. Pink Fragment
+Polyurethane 2. Black Fiber
+Polyurethane 6. Yellow Foam
+Polypropylene 14. Green Fiber
+Polypropylene 17. Purple Fiber
+Polypropylene 5. Green Fiber
+Polypropylene 21. White Film
+Polypropylene 20. Orange Fragment
+Polypropylene 18. Purple Foam
+Polypropylene 6. Clear Fragment
+Polypropylene 10. Brown Fiber
+Polypropylene 1. Light Blue Fragment
+Polypropylene 13. Pink Fiber
+Polypropylene 15. Green Fiber
+Polypropylene 4. Green Fragment
+Polypropylene 2. Light Blue Fragment
+Polypropylene 19. Blue Fiber
+Polypropylene 7. Green Fragment
+Polypropylene 3. Red Fiber
+Polypropylene 9. Blue Fiber
+Polypropylene 8. Yellow Fragment
+Polypropylene 16. White Fragment
+Polypropylene 12. Green Fragment
+Polypropylene 11. Light Blue Fragment
+Polyethylene Terephthalate-co-Polycarbonate 1. Red Fragment
+Polyethylene-co-Polypropylene 1. Grey Fragment
+Polyethylene-co-Polypropylene 3. Blue Fragment
+Polyethylene-co-Polypropylene 2. Blue Fragment
+Polyethylene 26. Orange Sphere
+Polyethylene 15. Purple Sphere
+Polyethylene 18. Green Fragment
+Polyethylene 27. Blue Fragment
+Polyethylene 5. Grey Fragment
+Polyethylene 23. White Foam
+Polyethylene 8. Light Blue Film
+Polyethylene 7. Blue Fragment
+Polyethylene 2. White Foam
+Polyethylene 21. Blue Film
+Polyethylene 16. Clear Fragment
+Polyethylene 22. Blue Foam
+Polyethylene 10. Light Blue Film
+Polyethylene 13. Black Fragment
+Polyethylene 11. Light Blue Film
+Polyethylene 6. Light Blue Fragment
+Polyethylene 14. Pink Fragment
+Polyethylene 4. Blue Sphere
+Polyethylene 20. Blue Film
+Polyethylene 12. Blue Fragment
+Polyethylene 1. Blue Sphere
+Polyethylene 28. Clear Fragment
+Polyethylene 19. White Fragment
+Polyethylene 9. Light Blue Film
+Polyethylene 25. Yellow Sphere
+Polyethylene 24. Brown Sphere
+Polyethylene Terephthalate 1. Clear Fragment
+Polyester 7. Pink Fiber
+Polyester 5. Clear Fiber
+Polyester 1. Clear Fiber
+Polyester 2. Red Fiber
+Polyester 12. Red Fiber
+Polyester 4. Red Fiber
+Polyester 11. Blue Fiber
+Polyester 10. Black Fiber
+Polyester 8. Red Fiber
+Polyester 6. Clear Fiber
+Polyester 9. Purple Fiber
+Polyester 3. Dark Blue Fiber
+Rubber 5. Green Film (Tall Oil Rosin)
+Rubber 1. White Fragment (Styrene-Isoprene)
+Rubber 3. Red Fiber (Styrene-Isoprene)
+Rubber 4. Red Fragment (Styrene-Isoprene)
+Polystyrene 4. White Film
+Polystyrene 6. Blue Fragment
+Polystyrene 5. Black Foam
+Polystyrene 7. Green Foam
+Polystyrene 8. Blue Foam
+Polystyrene 2. Clear Sphere
+Polystyrene 9. Blue Foam
+Polystyrene 1. Yellow Fragment
+Polystyrene 3. Blue Fragment

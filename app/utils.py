@@ -9,7 +9,7 @@ from numpy.polynomial.polynomial import Polynomial #for polynomial fitting algor
 import pandas as pd
 import pywt #for wavelet algorithm
 
-height_threshold = 0.2
+height_threshold = 0.6
 
 db_file_path = 'app/database/microplastics_reference.db'  # Path to SQLite database
 
@@ -79,10 +79,7 @@ def plot_spectrum(wavelengths, intensities, peaks, title, filename, directory='a
 
 def calculate_similarity(sample_peaks):
     similarities = {}
-    position_tolerance = 0.1
-    intensity_tolerance = 0.2
-    window = 50
-    penalty_score = -1  # Represents a heavy penalty for unmatched peaks
+    window = 25
 
     for name in reference_spectra_ids:
         intensities, wavelengths, comment = get_spectrum_data(name)
@@ -92,8 +89,9 @@ def calculate_similarity(sample_peaks):
 
         for sample_peak in sample_peaks:
             # Check suitable matching peaks within a ±window range
-            best_match_score = penalty_score
+            sample_peak_score = -1
             sample_wavenumber = sample_peak[0]
+            found_peak = False
 
             for ref_peak in ref_peaks:
                 ref_wavenumber = ref_peak[0]
@@ -104,15 +102,15 @@ def calculate_similarity(sample_peaks):
                     position_diff = abs(sample_wavenumber - ref_wavenumber) / ref_wavenumber
                     intensity_diff = abs(sample_peak[1] - ref_intensity) / ref_intensity
 
-                    if position_diff < position_tolerance and intensity_diff < intensity_tolerance:
-                        # Calculate a weighted similarity using a stricter match
-                        similarity = 1 - (0.8 * position_diff + 0.2 * intensity_diff)
-                        weighted_similarity = similarity * ref_intensity
+                    similarity = 1 - (0.8 * position_diff + 0.2 * intensity_diff)
+                    weighted_similarity = similarity * ref_intensity
 
-                        # Use the accumulated score for each sample peak
-                        best_match_score = max(best_match_score, weighted_similarity)
+                    sample_peak_score = weighted_similarity
+                    found_peak = True
 
-            similarity_scores.append(best_match_score)
+            if found_peak == False:
+                similarity_scores.append(-1)
+            similarity_scores.append(sample_peak_score)
 
         # Calculate a weighted average similarity for this reference
         if similarity_scores:
